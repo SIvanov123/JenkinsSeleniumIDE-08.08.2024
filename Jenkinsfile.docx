@@ -2,12 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage("Checout code") {
-            //checkout repository
+        stage("Checkout Code") {
             steps {
-                git branch: 'main' ,url: 'https://github.com/SIvanov123/JenkinsSeleniumIDE-08.08.2024'
+                // Checkout repository
+                git branch: 'main', url: 'https://github.com/SIvanov123/JenkinsSeleniumIDE-08.08.2024'
             }
         }
-       
     }
 }

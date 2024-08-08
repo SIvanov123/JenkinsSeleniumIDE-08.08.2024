@@ -8,9 +8,9 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/SIvanov123/JenkinsSeleniumIDE-08.08.2024'
             }
         }
-
         stage("Set up .Net Core") {
             steps {
+                // Set up .Net
                 bat '''
                 echo Downloading .Net 6 SDK
                 curl -l -o dotnet-sdk-6.0.132-win-x64.exe https://download.visualstudio.microsoft.com/download/pr/0c82e7e6-fdde-49f2-a69f-bd986aeafe1b/9ea7411a22e661fff0e61e56a466e484/dotnet-sdk-6.0.132-win-x64.exe
@@ -19,24 +19,21 @@ pipeline {
                 '''
             }
         }
-
-        stage("Restoring NuGet Packages") {
+        stage("Restore NuGet Packages") {
             steps {
                 // Restore NuGet packages
                 bat 'dotnet restore SeleniumIde.sln'
             }
         }
-
         stage("Build") {
             steps {
                 // Build code
                 bat 'dotnet build SeleniumIde.sln --configuration Release'
             }
         }
-
         stage("Run Tests") {
             steps {
-                // Run tests and save test results
+                // Run tests
                 bat 'dotnet test SeleniumIde.sln --logger "trx;LogFileName=TestsResults.trx"'
             }
         }
@@ -44,11 +41,10 @@ pipeline {
 
     post {
         always {
+            // Archive test results
             archiveArtifacts artifacts: '**/TestsResults/*.trx', allowEmptyArchive: true
-            steps {
-                // Publish test results
-                mstest testResultsFile: '**/TestsResults/*.trx'
-            }
+            // Publish test results
+            step([$class: 'MSTestPublisher', testResultsFile: '**/TestsResults/*.trx'])
         }
     }
 }

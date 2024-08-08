@@ -34,17 +34,18 @@ pipeline {
         stage("Run Tests") {
             steps {
                 // Run tests
-                bat 'dotnet test SeleniumIde.sln --logger "trx;LogFileName=TestsResults.trx"'
+                bat 'dotnet test SeleniumIde.sln --logger "trx;LogFileName=TestResults.trx"'
             }
         }
     }
 
     post {
         always {
-            // Archive test results
-            archiveArtifacts artifacts: '**/TestsResults/*.trx', allowEmptyArchive: true
-            // Publish test results
-            step([$class: 'MSTestPublisher', testResultsFile: '**/TestsResults/*.trx'])
+             archiveArtifacts artifacts: '**/TestResults/*.trx', allowEmptyArchive: true
+            junit '**/TestResults/*.trx'
         }
     }
 }
+
+
+

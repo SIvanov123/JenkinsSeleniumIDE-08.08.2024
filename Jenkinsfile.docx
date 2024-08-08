@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages{
+        stage(""){
+            //checkout repository
+            steps{
+                git branch: 'main' ,url: 'https://github.com/SIvanov123/JenkinsSeleniumIDE-08.08.2024'
+            }
+        }
+         stage(""){
+            //install dot net 
+            
+        } stage(""){
+            //install dependencies
+            
+        } stage(""){
+            //build
+            
+        } stage(""){
+            //run tests
+            
+        }
+    }
+}
